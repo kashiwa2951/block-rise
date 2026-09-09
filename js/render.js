@@ -73,11 +73,14 @@
   function drawCellGuide(ctx, px, py, s) {
     var pad = Math.max(0.8, s * 0.05);
     roundRect(ctx, px + pad, py + pad, s - pad * 2, s - pad * 2, Math.max(2, s * 0.22));
-    ctx.fillStyle = 'rgba(255,255,255,0.028)';
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
     ctx.fill();
   }
 
   /* ---------- サイズ調整 ---------- */
+
+  /* 盤面のまわりに描く枠線ぶんの余白（px）。CSS の #board の box-shadow に対応。 */
+  var BOARD_FRAME = 6;
 
   /* 盤面の左右にタッチ操作用の余白を取るレイアウトかどうか */
   function isTouchLayout() {
@@ -92,6 +95,11 @@
     // レイアウト前で測れないときは、ウィンドウサイズから概算する
     var availW = wrapEl.clientWidth || (global.innerWidth * 0.9);
     var availH = wrapEl.clientHeight || (global.innerHeight * 0.6);
+
+    // 盤面のまわりの枠線（CSS の #board の box-shadow）が
+    // #board-wrap の overflow:hidden で切れないよう、そのぶんを空けておく
+    availW -= BOARD_FRAME * 2;
+    availH -= BOARD_FRAME * 2;
 
     // タッチ操作時は、盤面の左右に指を置くための余白を確保する
     var gutter = isTouchLayout()
