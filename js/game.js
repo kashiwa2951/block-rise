@@ -642,7 +642,8 @@
 
   BB.debug = {
     G: G,
-    /* 文字列配列から盤面を作る。'.' は空、それ以外は色キー（I O T S Z J L / '#'=G）。
+    /* 文字列配列から盤面を作る。'.' は空、それ以外は色キー
+       （4マス: I O T S Z J L / 3マス: D V / '#'=G）。
        配列は下端そろえで配置される。 */
     setBoard: function (rows) {
       G.board.reset();

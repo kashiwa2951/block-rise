@@ -1,5 +1,6 @@
 /* ===== BLOCK RISE : pieces =====
- * 4マスピース7種の形状・回転（独自の壁ぎわ補正つき）・袋方式のランダマイザ。
+ * ピース9種（4マス7種 + 3マス2種）の形状・回転（独自の壁ぎわ補正つき）・
+ * 袋方式のランダマイザ。
  */
 (function (global) {
   'use strict';
@@ -29,10 +30,23 @@
         [0, 0, 0]],
     Z: [[1, 1, 0],
         [0, 1, 1],
-        [0, 0, 0]]
+        [0, 0, 0]],
+
+    /* --- 3マスピース ---
+     * せり上がってくる行の穴を埋めやすい小回りのきく形。
+     * D = まっすぐ 3 マス、V = かぎ形 3 マス。 */
+    D: [[0, 0, 0],
+        [1, 1, 1],
+        [0, 0, 0]],
+    V: [[1, 0],
+        [1, 1]]
   };
 
-  var TYPES = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+  var TYPES = ['I', 'J', 'L', 'O', 'S', 'T', 'Z', 'D', 'V'];
+
+  /* 袋に入れる中身。この並びが 1 巡ぶんとしてシャッフルされて配られます。
+   * 同じ種類を 2 回書けば、その種類だけ出やすくできます。 */
+  var BAG_SET = ['I', 'J', 'L', 'O', 'S', 'T', 'Z', 'D', 'V'];
 
   function rotateCW(m) {
     var n = m.length, out = [], r, c;
@@ -137,7 +151,7 @@
     return p;
   };
 
-  /* --- 袋方式のランダマイザ（7種を1巡ぶんずつシャッフルして配る） --- */
+  /* --- 袋方式のランダマイザ（BAG_SET を1巡ぶんずつシャッフルして配る） --- */
 
   function Bag() {
     this.queue = [];
@@ -146,7 +160,7 @@
   }
 
   Bag.prototype.refill = function () {
-    var bag = TYPES.slice();
+    var bag = BAG_SET.slice();
     for (var i = bag.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
       var t = bag[i]; bag[i] = bag[j]; bag[j] = t;
@@ -155,7 +169,7 @@
   };
 
   Bag.prototype.next = function () {
-    if (this.queue.length <= 7) this.refill();
+    if (this.queue.length <= BAG_SET.length) this.refill();
     return this.queue.shift();
   };
 
