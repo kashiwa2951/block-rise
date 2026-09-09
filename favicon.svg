@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="BLOCK RISE">
+  <title>BLOCK RISE</title>
+  <defs>
+    <!-- ゲーム中のブロックと同じ、上が明るいグラデーション -->
+    <linearGradient id="gI" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8ccff"/><stop offset=".45" stop-color="#e879f9"/><stop offset="1" stop-color="#86198f"/>
+    </linearGradient>
+    <linearGradient id="gJ" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0f7a8"/><stop offset=".45" stop-color="#a3e635"/><stop offset="1" stop-color="#4d7c0f"/>
+    </linearGradient>
+    <linearGradient id="gS" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fde3a7"/><stop offset=".45" stop-color="#f59e0b"/><stop offset="1" stop-color="#92400e"/>
+    </linearGradient>
+    <linearGradient id="gO" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bae6fd"/><stop offset=".45" stop-color="#38bdf8"/><stop offset="1" stop-color="#075985"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 盤面と同じ濃紺の下地 -->
+  <rect width="64" height="64" rx="14" fill="#121734"/>
+
+  <!-- 上から落ちてくるブロック -->
+  <rect x="23.5" y="4.5" width="17" height="17" rx="4.5" fill="url(#gI)"/>
+
+  <!-- 下からせり上がってきた土台 -->
+  <rect x="4.5"  y="42.5" width="17" height="17" rx="4.5" fill="url(#gJ)"/>
+  <rect x="23.5" y="42.5" width="17" height="17" rx="4.5" fill="url(#gS)"/>
+  <rect x="42.5" y="42.5" width="17" height="17" rx="4.5" fill="url(#gO)"/>
+</svg>

@@ -147,7 +147,16 @@ js/audio.js       Web Audio API による効果音（音声ファイル不要）
 js/input.js       キーボード（DAS/ARR）とタッチ操作
 js/render.js      Canvas 描画とアニメーション
 js/game.js        ゲームループと状態機械
+
+favicon.svg           ファビコン本体（拡大しても劣化しないのでこれが基本）
+favicon.ico           16/32/48px 入り。ブックマーク一覧など ico を求める環境向け
+favicon-32.png        SVG 非対応環境向けのフォールバック
+favicon-180.png       高解像度のフォールバック
+apple-touch-icon.png  iOS のホーム画面用（角丸は iOS 側で付くので四角のまま）
 ```
+
+アイコンを描き直すときは `favicon.svg` を編集し、そこから他の形式を書き出してください。
+`index.html` の `?v=` の数字を +1 すると、ブラウザが古いアイコンを使い続けるのを防げます。
 
 ### 難易度などの調整
 
