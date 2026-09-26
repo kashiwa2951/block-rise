@@ -38,7 +38,7 @@
 <link rel="icon" type="image/png" sizes="180x180" href="favicon-180.png?v=3">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 <div id="app">
@@ -127,10 +127,24 @@
 
   <div id="touch-controls">
     <button class="pad-btn" data-act="left"     type="button" aria-label="左へ移動">◀</button>
-    <button class="pad-btn" data-act="rotate"   type="button" aria-label="回転">⟳</button>
+    <!-- 回転（⟳ U+27F3）とハードドロップ（⤓ U+2913）は対応フォントが少なく、
+         端末によっては豆腐になるため SVG で描く。◀ ▶ ▼ は広く対応しているので文字のまま。 -->
+    <button class="pad-btn" data-act="rotate"   type="button" aria-label="回転">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 4.6A7.4 7.4 0 1 0 19.4 12" fill="none" stroke="currentColor"
+              stroke-width="2.4" stroke-linecap="round"/>
+        <path class="i-fill" d="M10.1 1.5v6.2L15.4 4.6z"/>
+      </svg>
+    </button>
     <button class="pad-btn" data-act="right"    type="button" aria-label="右へ移動">▶</button>
     <button class="pad-btn" data-act="soft"     type="button" aria-label="ソフトドロップ">▼</button>
-    <button class="pad-btn" data-act="hard"     type="button" aria-label="ハードドロップ">⤓</button>
+    <button class="pad-btn" data-act="hard"     type="button" aria-label="ハードドロップ">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 3.6v7.6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path class="i-fill" d="M6.8 10.4h10.4L12 17.8z"/>
+        <path d="M6 20.6h12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </button>
     <button class="pad-btn" data-act="hold"     type="button" aria-label="ホールド">H</button>
   </div>
 
@@ -169,12 +183,12 @@
 </div>
 
 <!-- ?v= はブラウザのキャッシュ対策。ファイルを更新したら数字を +1 する -->
-<script src="js/config.js?v=4"></script>
-<script src="js/pieces.js?v=4"></script>
-<script src="js/board.js?v=4"></script>
-<script src="js/audio.js?v=4"></script>
-<script src="js/render.js?v=4"></script>
-<script src="js/input.js?v=4"></script>
-<script src="js/game.js?v=4"></script>
+<script src="js/config.js?v=5"></script>
+<script src="js/pieces.js?v=5"></script>
+<script src="js/board.js?v=5"></script>
+<script src="js/audio.js?v=5"></script>
+<script src="js/render.js?v=5"></script>
+<script src="js/input.js?v=5"></script>
+<script src="js/game.js?v=5"></script>
 </body>
 </html>

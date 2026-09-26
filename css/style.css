@@ -415,6 +415,10 @@ kbd {
   -webkit-user-select: none;
 }
 .pad-btn:active { background: var(--accent); color: #fff; transform: scale(.95); }
+/* SVG アイコンのボタン（回転・ハードドロップ）。文字のボタン（◀ ▶ ▼ H）と
+   大きさが揃うよう em 指定にし、色は currentColor で押下時の白にも追従させる。 */
+.pad-btn svg { width: 1.25em; height: 1.25em; display: block; margin: 0 auto; }
+.pad-btn .i-fill { fill: currentColor; }
 
 /* ---------- responsive ---------- */
 
