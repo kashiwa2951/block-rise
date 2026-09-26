@@ -101,7 +101,15 @@ body {
 .icon-btn { box-shadow: 0 1px 3px rgba(30, 42, 90, .10); }
 .icon-btn:hover { background: #ffffff; }
 .icon-btn:active { transform: scale(.93); }
-.icon-btn.off { opacity: .42; }
+
+/* SVG アイコン。消音中は波線をバツ印に差し替える。
+   色は currentColor なので、ボタンの文字色をそのまま拾う。 */
+.icon-btn svg { width: 20px; height: 20px; display: block; }
+.icon-btn .i-fill { fill: currentColor; }
+.icon-btn .i-off { display: none; }
+.icon-btn.off .i-on { display: none; }
+.icon-btn.off .i-off { display: inline; }
+.icon-btn.off { color: var(--text-dim); }
 
 /* ---------- stage ---------- */
 

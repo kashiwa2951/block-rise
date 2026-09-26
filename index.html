@@ -38,7 +38,7 @@
 <link rel="icon" type="image/png" sizes="180x180" href="favicon-180.png?v=3">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
 <div id="app">
@@ -46,7 +46,21 @@
   <header id="topbar">
     <h1 class="logo">BLOCK<span>RISE</span></h1>
     <div class="topbar-actions">
-      <button id="btn-sound" class="icon-btn" type="button" aria-label="サウンド切り替え">♪</button>
+      <!-- アイコンは文字ではなく SVG で描く。記号の文字（♪ に結合用スラッシュを重ねるなど）は
+           端末のフォントによっては合成できず、豆腐（□?）になってしまうため。 -->
+      <button id="btn-sound" class="icon-btn" type="button" aria-label="サウンドを消す">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path class="i-fill" d="M3.2 9.3h3.1L11 5.5v13L6.3 14.7H3.2z"/>
+          <g class="i-on" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+            <path d="M14.4 9.5a3.6 3.6 0 0 1 0 5"/>
+            <path d="M17 6.9a7.3 7.3 0 0 1 0 10.2"/>
+          </g>
+          <g class="i-off" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+            <path d="M15 9.7l4.8 4.6"/>
+            <path d="M19.8 9.7L15 14.3"/>
+          </g>
+        </svg>
+      </button>
       <button id="btn-pause" class="icon-btn" type="button" aria-label="一時停止">II</button>
       <button id="btn-help"  class="icon-btn" type="button" aria-label="遊び方">?</button>
     </div>
@@ -155,12 +169,12 @@
 </div>
 
 <!-- ?v= はブラウザのキャッシュ対策。ファイルを更新したら数字を +1 する -->
-<script src="js/config.js?v=3"></script>
-<script src="js/pieces.js?v=3"></script>
-<script src="js/board.js?v=3"></script>
-<script src="js/audio.js?v=3"></script>
-<script src="js/render.js?v=3"></script>
-<script src="js/input.js?v=3"></script>
-<script src="js/game.js?v=3"></script>
+<script src="js/config.js?v=4"></script>
+<script src="js/pieces.js?v=4"></script>
+<script src="js/board.js?v=4"></script>
+<script src="js/audio.js?v=4"></script>
+<script src="js/render.js?v=4"></script>
+<script src="js/input.js?v=4"></script>
+<script src="js/game.js?v=4"></script>
 </body>
 </html>

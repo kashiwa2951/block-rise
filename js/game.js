@@ -541,10 +541,15 @@
     }
   }
 
+  /* アイコンの絵は CSS が off クラスを見て切り替えるので、ここでは状態だけ伝える */
+  function applySoundIcon(muted) {
+    el.btnSound.classList.toggle('off', muted);
+    el.btnSound.setAttribute('aria-label', muted ? 'サウンドを出す' : 'サウンドを消す');
+  }
+
   function toggleSound() {
     var muted = BB.Audio.toggle();
-    el.btnSound.classList.toggle('off', muted);
-    el.btnSound.textContent = muted ? '♪̸' : '♪';
+    applySoundIcon(muted);
     if (!muted) BB.Audio.play('rotate');
   }
 
@@ -613,10 +618,7 @@
     G.phase = 'TITLE';
     showOverlay('title');
 
-    if (BB.Audio.isMuted()) {
-      el.btnSound.classList.add('off');
-      el.btnSound.textContent = '♪̸';
-    }
+    applySoundIcon(BB.Audio.isMuted());
 
     el.ovButton.addEventListener('click', function () {
       if (G.phase === 'PAUSED') togglePause();
