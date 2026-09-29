@@ -38,7 +38,7 @@
 <link rel="icon" type="image/png" sizes="180x180" href="favicon-180.png?v=3">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3">
 
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 <div id="app">
@@ -183,12 +183,18 @@
 </div>
 
 <!-- ?v= はブラウザのキャッシュ対策。ファイルを更新したら数字を +1 する -->
-<script src="js/config.js?v=5"></script>
-<script src="js/pieces.js?v=5"></script>
-<script src="js/board.js?v=5"></script>
-<script src="js/audio.js?v=5"></script>
-<script src="js/render.js?v=5"></script>
-<script src="js/input.js?v=5"></script>
-<script src="js/game.js?v=5"></script>
+<script src="js/config.js?v=6"></script>
+<script src="js/pieces.js?v=6"></script>
+<script src="js/board.js?v=6"></script>
+<script src="js/audio.js?v=6"></script>
+<script src="js/render.js?v=6"></script>
+<script src="js/input.js?v=6"></script>
+<script src="js/game.js?v=6"></script>
+
+<!-- アクセス解析（GoatCounter）。ページの閲覧数を数える（プレイ回数は game.js から送る）。
+     集計画面は https://kashiwa2951.goatcounter.com 。Cookie は使わない。
+     localhost やファイルを直接開いたときは数えず、読み込めなくてもゲームはそのまま動く。 -->
+<script data-goatcounter="https://kashiwa2951.goatcounter.com/count"
+        async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>

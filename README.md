@@ -171,6 +171,23 @@ ogp.jpg               X などで URL を貼ったときに出るカード画像
 - 反映されないときは
   [X の Card Validator](https://cards-dev.twitter.com/validator) で URL を再取得できます。
 
+### アクセス解析
+
+公開ページには [GoatCounter](https://www.goatcounter.com/) のタグを入れてあり、
+次の 2 つを数えています。集計は https://kashiwa2951.goatcounter.com で見られます。
+
+| 集計画面での表示 | 意味 | 送っている場所 |
+|---|---|---|
+| `/block-rise/` | ページが開かれた回数 | `index.html` 末尾の GoatCounter タグ |
+| `game-start`（ゲーム開始） | ゲームを始めた回数（R キーのリスタートも含む） | `js/game.js` の `countPlay()` |
+
+- Cookie は使わず、個人を特定する情報も集めません。
+- `localhost` やファイルを直接開いたときは数えません。解析スクリプトが読み込めない
+  （広告ブロッカー・オフライン）ときも、ゲームはそのまま動きます。
+- **自分のアクセスを集計から外すには**、その端末のブラウザで
+  `https://kashiwa2951.github.io/block-rise/#toggle-goatcounter` を 1 回開きます
+  （もう一度開くと元に戻ります）。スマホと PC など、ブラウザごとに 1 回ずつ必要です。
+
 ### 難易度などの調整
 
 `js/config.js` の数値を書き換えるだけで調整できます。
@@ -219,4 +236,5 @@ Chrome / Edge / Safari / Firefox の最新版（PC・スマホとも）。
 
 MIT License. 詳細は [LICENSE](LICENSE) を参照してください。
 
-コード・図形・配色・効果音はすべて自作で、外部ライブラリや外部素材は使用していません。
+コード・図形・配色・効果音はすべて自作で、外部ライブラリや外部素材は使用していません
+（アクセス解析の GoatCounter のタグのみ外部から読み込んでいます）。

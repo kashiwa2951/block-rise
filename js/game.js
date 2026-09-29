@@ -510,12 +510,22 @@
     refreshPreviews();
   }
 
+  /* アクセス解析（GoatCounter）にプレイ回数を 1 回記録する。
+     広告ブロッカーやオフラインで解析スクリプトが読み込めていないときは何もしない。
+     解析側で何が起きてもゲームは止めない。 */
+  function countPlay() {
+    var gc = global.goatcounter;
+    if (!gc || !gc.count) return;
+    try { gc.count({ path: 'game-start', title: 'ゲーム開始', event: true }); } catch (e) {}
+  }
+
   function start() {
     reset();
     showOverlay(null);
     BB.Audio.unlock();
     BB.Audio.play('start');
     spawnPiece();
+    countPlay();
   }
 
   function gameOver() {
