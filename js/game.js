@@ -26,6 +26,8 @@
     time: 0,
 
     score: 0, best: 0, level: 1, lines: 0, combo: 0, chain: 0,
+    maxChain: 0,        // 1 プレイ中の最大連鎖数（シェア文に使う）
+    newBest: false,     // 直前のゲームで自己ベストを上回ったか
     clearedThisLock: false,
 
     gravityTimer: 0, lockTimer: 0, lockResets: 0, softActive: false,
@@ -92,10 +94,43 @@
       : 'RISE ' + G.riseTimer.toFixed(1) + 's';
   }
 
+  /* ---------- X でシェア ----------
+   * X の「Web インテント」を使う。リンク先は文面入りの X の投稿画面で、
+   * 投稿するかどうかも含めてすべて X 上で本人が操作する。
+   * こちらは OAuth も API キーも使わず、X のアカウント情報は一切受け取らない。 */
+
+  var SHARE_INTENT = 'https://x.com/intent/post';
+  var SHARE_URL_FALLBACK = 'https://kashiwa2951.github.io/block-rise/';
+
+  /* シェアする URL。公開先は index.html の og:url に 1 か所だけ書いてあるので、そこから読む。
+     ローカルで遊んでいても公開ページの URL がシェアされる。 */
+  function shareTargetUrl() {
+    var m = document.querySelector('meta[property="og:url"]');
+    return (m && m.content) ? m.content : SHARE_URL_FALLBACK;
+  }
+
+  function buildShareText() {
+    var lines = [];
+    if (G.newBest) lines.push('自己ベスト更新！');
+    lines.push('BLOCK RISE でスコア ' + G.score.toLocaleString('en-US') + ' 点');
+    var detail = 'LEVEL ' + G.level + ' / ' + G.lines + ' ライン';
+    if (G.maxChain >= 2) detail += ' / 最大 ' + G.maxChain + ' 連鎖';
+    lines.push(detail);
+    lines.push('#BLOCKRISE');
+    return lines.join('\n');
+  }
+
+  function buildShareUrl() {
+    return SHARE_INTENT +
+      '?text=' + encodeURIComponent(buildShareText()) +
+      '&url=' + encodeURIComponent(shareTargetUrl());
+  }
+
   function showOverlay(kind) {
     if (kind === null) { el.overlay.classList.remove('show'); return; }
     el.overlay.dataset.screen = kind;
     el.overlay.classList.add('show');
+    el.ovShare.hidden = (kind !== 'over');
 
     if (kind === 'title') {
       el.ovTitle.textContent = 'BLOCK RISE';
@@ -111,11 +146,13 @@
       el.ovHelpBtn.hidden = false;
     } else if (kind === 'over') {
       el.ovTitle.textContent = 'GAME OVER';
-      el.ovText.innerHTML = 'ブロックが天井に届きました。<br>LEVEL ' + G.level + ' / ' + G.lines + ' LINES';
+      el.ovText.innerHTML = 'ブロックが天井に届きました。<br>LEVEL ' + G.level + ' / ' + G.lines + ' LINES' +
+        (G.maxChain >= 2 ? ' / 最大 ' + G.maxChain + ' 連鎖' : '');
       el.ovScore.textContent = 'SCORE  ' + G.score.toLocaleString('en-US') +
-        (G.score >= G.best ? '　🏆 NEW BEST!' : '　BEST ' + G.best.toLocaleString('en-US'));
+        (G.newBest ? '　🏆 NEW BEST!' : '　BEST ' + G.best.toLocaleString('en-US'));
       el.ovButton.textContent = 'もう一度あそぶ';
       el.ovHelpBtn.hidden = true;
+      el.ovShare.href = buildShareUrl();
     }
   }
 
@@ -279,6 +316,7 @@
     G.clearingRows = rows;
     G.clearT = 0;
     G.chain++;
+    if (G.chain > G.maxChain) G.maxChain = G.chain;
     G.clearedThisLock = true;
 
     rows.forEach(function (r) { BB.Render.burstRow(r); });
@@ -496,6 +534,7 @@
     G.holdType = null;
     G.canHold = true;
     G.score = 0; G.level = 1; G.lines = 0; G.combo = 0; G.chain = 0;
+    G.maxChain = 0; G.newBest = false;
     G.clearedThisLock = false;
     G.gravityTimer = 0; G.lockTimer = 0; G.lockResets = 0; G.softActive = false;
     G.clearingRows = []; G.clearT = 0;
@@ -510,13 +549,14 @@
     refreshPreviews();
   }
 
-  /* アクセス解析（GoatCounter）にプレイ回数を 1 回記録する。
+  /* アクセス解析（GoatCounter）に出来事を 1 回記録する（ゲーム開始・X でシェア）。
+     送るのは出来事の名前だけで、スコアやアカウントなどの中身は送らない。
      広告ブロッカーやオフラインで解析スクリプトが読み込めていないときは何もしない。
      解析側で何が起きてもゲームは止めない。 */
-  function countPlay() {
+  function countEvent(path, title) {
     var gc = global.goatcounter;
     if (!gc || !gc.count) return;
-    try { gc.count({ path: 'game-start', title: 'ゲーム開始', event: true }); } catch (e) {}
+    try { gc.count({ path: path, title: title, event: true }); } catch (e) {}
   }
 
   function start() {
@@ -525,13 +565,15 @@
     BB.Audio.unlock();
     BB.Audio.play('start');
     spawnPiece();
-    countPlay();
+    countEvent('game-start', 'ゲーム開始');
   }
 
   function gameOver() {
     G.phase = 'OVER';
     G.piece = null;
-    if (G.score > G.best) { G.best = G.score; saveBest(G.best); }
+    // ベストを書き換える前に判定する（書き換えた後だと同点や 0 点でも「更新」に見えてしまう）
+    G.newBest = G.score > G.best && G.score > 0;
+    if (G.newBest) { G.best = G.score; saveBest(G.best); }
     BB.Audio.play('gameOver');
     BB.Render.addShake(10);
     updateHud();
@@ -605,6 +647,7 @@
     el.ovScore   = document.getElementById('ov-score');
     el.ovButton  = document.getElementById('ov-button');
     el.ovHelpBtn = document.getElementById('ov-help-btn');
+    el.ovShare   = document.getElementById('ov-share');
     el.toast     = document.getElementById('toast');
     el.help      = document.getElementById('help');
     el.riseMeter = document.getElementById('rise-meter');
@@ -635,6 +678,8 @@
       else start();
     });
     el.ovHelpBtn.addEventListener('click', function () { showHelp(true); });
+    // リンクとして X の投稿画面を開く（遷移は止めない）。押された回数だけ記録する。
+    el.ovShare.addEventListener('click', function () { countEvent('share-x', 'X でシェア'); });
     el.btnHelp.addEventListener('click', function () { showHelp(true); });
     document.getElementById('help-close').addEventListener('click', function () { showHelp(false); });
     el.btnPause.addEventListener('click', function () { togglePause(); });
@@ -699,13 +744,15 @@
       return BB.debug.state();
     },
     forceRise: function () { doRise(); return BB.debug.dump(); },
+    gameOver: function () { gameOver(); return BB.debug.state(); },
     setRiseInterval: function (sec) { G.riseOverride = sec || 0; resetRiseTimer(); return currentRiseInterval(); },
     pauseTimers: function () { G.riseOverride = 99999; resetRiseTimer(); },
     start: start,
     state: function () {
       return {
         phase: G.phase, score: G.score, level: G.level, lines: G.lines,
-        combo: G.combo, chain: G.chain, riseTimer: G.riseTimer,
+        combo: G.combo, chain: G.chain, maxChain: G.maxChain, newBest: G.newBest,
+        best: G.best, riseTimer: G.riseTimer, shareUrl: buildShareUrl(),
         piece: G.piece ? { type: G.piece.type, x: G.piece.x, y: G.piece.y, rot: G.piece.rot } : null,
         hold: G.holdType, next: G.bag ? G.bag.peek(3) : []
       };

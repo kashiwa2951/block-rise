@@ -171,15 +171,36 @@ ogp.jpg               X などで URL を貼ったときに出るカード画像
 - 反映されないときは
   [X の Card Validator](https://cards-dev.twitter.com/validator) で URL を再取得できます。
 
+### スコアを X でシェア
+
+ゲームオーバー画面の「X でシェア」を押すと、スコア入りの文面が入った
+**X の投稿画面**が開きます。投稿文の例：
+
+```
+自己ベスト更新！
+BLOCK RISE でスコア 12,345 点
+LEVEL 5 / 48 ライン / 最大 3 連鎖
+#BLOCKRISE
+https://kashiwa2951.github.io/block-rise/
+```
+
+- 1 行目はベストを上回ったときだけ、「最大 N 連鎖」は 2 連鎖以上のときだけ付きます。
+- 仕組みは X の「Web インテント」（`https://x.com/intent/post`）へのリンクです。
+  投稿するかどうかも含めてすべて X の画面上で本人が操作し、**このサイトは
+  X のアカウント情報を一切受け取りません**（ログインや API キーも使っていません）。
+- 末尾の URL は `index.html` の `og:url` から読んでいるので、OGP カードが付きます。
+- 文面は `js/game.js` の `buildShareText()` で変えられます。
+
 ### アクセス解析
 
 公開ページには [GoatCounter](https://www.goatcounter.com/) のタグを入れてあり、
-次の 2 つを数えています。集計は https://kashiwa2951.goatcounter.com で見られます。
+次の 3 つを数えています。集計は https://kashiwa2951.goatcounter.com で見られます。
 
 | 集計画面での表示 | 意味 | 送っている場所 |
 |---|---|---|
 | `/block-rise/` | ページが開かれた回数 | `index.html` 末尾の GoatCounter タグ |
-| `game-start`（ゲーム開始） | ゲームを始めた回数（R キーのリスタートも含む） | `js/game.js` の `countPlay()` |
+| `game-start`（ゲーム開始） | ゲームを始めた回数（R キーのリスタートも含む） | `js/game.js` の `countEvent()` |
+| `share-x`（X でシェア） | 「X でシェア」が押された回数（実際に投稿されたかは分かりません） | `js/game.js` の `countEvent()` |
 
 - Cookie は使わず、個人を特定する情報も集めません。
 - `localhost` やファイルを直接開いたときは数えません。解析スクリプトが読み込めない

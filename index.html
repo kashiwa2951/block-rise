@@ -86,6 +86,16 @@
             <p id="ov-score" class="ov-score"></p>
             <button id="ov-button" class="primary-btn" type="button">ゲーム開始</button>
             <button id="ov-help-btn" class="ghost-btn" type="button">遊び方を見る</button>
+            <!-- ゲームオーバー時だけ表示。X の投稿画面（Web インテント）を開くリンクで、
+                 投稿は X 上で本人が行う。こちらは X のアカウント情報を一切受け取らない。
+                 href はゲームオーバーのたびに game.js がスコア入りで組み立てる。 -->
+            <a id="ov-share" class="share-btn" href="https://x.com/intent/post"
+               target="_blank" rel="noopener noreferrer" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              <span>X でシェア</span>
+            </a>
           </div>
         </div>
 

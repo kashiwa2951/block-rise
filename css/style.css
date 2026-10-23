@@ -340,6 +340,31 @@ body {
 }
 .ghost-btn:hover { color: var(--text); background: rgba(30, 42, 90, .06); }
 
+/* X でシェア（ゲームオーバー時のみ）。<a> をボタンの見た目にしている。
+   X の配色（黒地に白）にして、何が開くのかがひと目で分かるようにする。 */
+.share-btn {
+  width: 100%;
+  margin-top: 9px;
+  padding: 11px 18px;
+  border-radius: 12px;
+  background: #0f1419;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  box-shadow: 0 3px 10px rgba(15, 20, 25, .22);
+  transition: transform .12s ease, background .12s ease;
+}
+.share-btn:hover { background: #272c30; }
+.share-btn:active { transform: scale(.97); }
+.share-btn svg { width: 17px; height: 17px; display: block; fill: currentColor; }
+.share-btn[hidden] { display: none; }   /* display:flex に hidden 属性が負けないように */
+
 .help-card { text-align: left; width: min(520px, 100%); }
 .help-card h3 {
   margin: 18px 0 7px;
